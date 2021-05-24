@@ -1,0 +1,8 @@
+fastapi
+gunicorn
+uvicorn
+redis
+
+requests
+pydantic
+websockets

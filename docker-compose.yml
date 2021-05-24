@@ -1,0 +1,38 @@
+
+version: '3'
+
+services:
+  app:
+    container_name: fastapi
+    build:
+      context: .
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    environment: 
+        - REDIS_PASSWORD=test
+        - REDIS_REPLICATION_MODE=master
+    ports:
+      - "6379:6379"
+
+    image: redis:5.0.7-alpine
+    volumes:
+      # save redisearch data to your current working directory
+      - ./redis-data:/data
+
+    command:
+      # Save if 100 keys are added in every 10 seconds
+      - "--save 10 100"
+      # Set password
+      - "--requirepass test"
+   
+  
